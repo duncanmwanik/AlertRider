@@ -37,11 +37,11 @@ void checkIncomingLoraData()
     if (rc.status.code == 1) // if there's no error
     {
       receivedState = rc.data.toInt();
-      if (receivedState == 1 || receivedState == 1 || receivedState == 1)
+      if (receivedState == 1 || receivedState == 2 || receivedState == 3)
       {
-        state = receivedState;
         Serial.print("Received state: ");
-        Serial.println(state);
+        Serial.println(receivedState);
+        state = (state == receivedState) ? 0 : receivedState;
       }
     }
     else

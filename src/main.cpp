@@ -3,6 +3,9 @@
 #include "LoRa_E32.h"
 #include "def.h"
 
+// TODO : Add delays using millis()
+// TODO : check voltage and flash neopixels periodically
+
 void setup()
 {
   Serial.begin(115200);
