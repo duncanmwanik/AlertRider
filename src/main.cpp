@@ -21,7 +21,8 @@ void setup()
 
 void loop()
 {
-  checkForButtonPress();
-  flashStateLED(); // flash specific LED only if state is 1, 2 or 3
-  checkIncomingLoraData();
+  checkBatteryVoltage();   // check battery voltage and flash the addressable led
+  checkForButtonPress();   // check if any button has been pressed
+  flashStateLED();         // flash specific LED only if state is 1, 2 or 3
+  checkIncomingLoraData(); // check for data/state send from other Loras
 }

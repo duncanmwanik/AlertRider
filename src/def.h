@@ -20,6 +20,18 @@
 #define BUTTON_YELLOW PA3  // state = 2
 #define BUTTON_RED PA4     // state = 3
 
+// battery voltage level
+#define BATTERY_VOLTAGE_PIN PA8
+#define BATTERY_STAT1 PA6
+#define BATTERY_STAT2 PA7
+#define BATTERY_SUPERVISOR_PIN PA0
+#define BATTERY_SUPERVISOR_CLR PB1
+
+#define BATTERY_VOLTAGE_FULL (3.8 * (3.3 / 4.2) * 4095)
+#define BATTERY_VOLTAGE_OKAY (3.3 * (3.3 / 4.2) * 4095)
+#define BATTERY_VOLTAGE_LOW (3.0 * (3.3 / 4.2) * 4095)
+#define BATTERY_VOLTAGE_LOW (3.0 * (3.3 / 4.2) * 4095)
+
 // seven-segment display
 #define pinA PB9
 #define pinB PB10
@@ -36,6 +48,9 @@
 #define lora_M1 PB3  // PULL TO GND FOR NORMAL OPERATION OF BYTE
 #define lora_M0 PB4  // PULL TO GND FOR NORMAL OPERATION OF BYTE
 
+#define NEOPIXEL_FLASH_ON_PERIOD_MS 1000  // turn the addrressable led ON for 1 second
+#define NEOPIXEL_FLASH_OFF_PERIOD_MS 3000 // turn the addrressable led OFF for 3 seconds
+
 // ---------- initialization
 void initializePins();
 
@@ -43,6 +58,7 @@ void initializePins();
 extern int state;
 extern int selectedChannel;
 extern int channels[];
+extern long lastExecutionMillis;
 
 // ---------- button functions
 void checkForButtonPress();
@@ -62,5 +78,8 @@ void checkIncomingLoraData();
 
 // ---------- seven-segment variables/functions
 void updateSevenSegmentDisplay(int number);
+
+// power monitoring
+void checkBatteryVoltage();
 
 #endif

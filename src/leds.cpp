@@ -4,6 +4,8 @@
 
 Adafruit_NeoPixel strip(LEDCOUNT, LEDPIN, NEO_RGB + NEO_KHZ800);
 
+bool flashed = false;
+
 void setupNeopixels()
 {
     strip.begin();
@@ -14,12 +16,26 @@ void setupNeopixels()
 // flash a spcific pixel
 void flashNeopixel(int pixel, int r, int g, int b)
 {
-    strip.setPixelColor(pixel, strip.Color(r, g, b));
-    strip.show();
-    // delay(500);
-    strip.clear();
-    strip.show();
-    // delay(500);
+    if (flashed) // if led is flashed
+    {
+        if ((millis() - lastExecutionMillis) >= NEOPIXEL_FLASH_ON_PERIOD_MS) // check if 1 second has passed
+        {
+            lastExecutionMillis = millis(); // set last flashing period
+            strip.clear();                  // stop flashing led
+            strip.show();
+            flashed = false;
+        }
+    }
+    else // if led is not flashed
+    {
+        if ((millis() - lastExecutionMillis) >= NEOPIXEL_FLASH_OFF_PERIOD_MS) // check if 3 seconds have passed
+        {
+            lastExecutionMillis = millis();                   // set last flashing period
+            strip.setPixelColor(pixel, strip.Color(r, g, b)); // flash the led
+            strip.show();
+            flashed = true;
+        }
+    }
 }
 
 void flashStateLED()
