@@ -3,54 +3,9 @@
 #include "def.h"
 
 // Our LoRa instance
-LoRa_E32 lora(&Serial1, lora_AUX, lora_M0, lora_M1);
+LoRa_E32 lora(&Serial, lora_AUX, lora_M0, lora_M1);
 
-void setupLora()
-{
-  lora.begin();
-  updateLoraParameters();
-}
 
-// sends state of the button pressed to other LoRas
-void sendLoraData(int state)
-{
-  String data = String(state);
-  ResponseStatus rs = lora.sendBroadcastFixedMessage(channels[selectedChannel], data);
-  if (rs.code == 1) // if there's no error
-  {
-    Serial.print("Successfully sent state: ");
-    Serial.println(data);
-  }
-  else
-  {
-    Serial.print("Failed to send state!");
-    Serial.println(rs.getResponseDescription());
-  }
-}
-
-// receives button states from other LoRas
-void checkIncomingLoraData()
-{
-  int receivedState = 0;
-  if (lora.available() > 1)
-  {
-    ResponseContainer rc = lora.receiveMessage();
-    if (rc.status.code == 1) // if there's no error
-    {
-      receivedState = rc.data.toInt();
-      if (receivedState == 1 || receivedState == 2 || receivedState == 3)
-      {
-        Serial.print("Received state: ");
-        Serial.println(receivedState);
-        state = (state == receivedState) ? 0 : receivedState;
-      }
-    }
-    else
-    {
-      Serial.println(rc.status.getResponseDescription());
-    }
-  }
-}
 void printParameters(struct Configuration configuration)
 {
   Serial.println("----------------------------------------");
@@ -140,4 +95,51 @@ void changeLoraChannel()
   updateLoraParameters();
   Serial.print("Changed channel to: ");
   Serial.println(selectedChannel);
+}
+
+void setupLora()
+{
+  lora.begin();
+  updateLoraParameters();
+}
+
+// sends state of the button pressed to other LoRas
+void sendLoraData(int state)
+{
+  String data = String(state);
+  ResponseStatus rs = lora.sendBroadcastFixedMessage(channels[selectedChannel], data);
+  if (rs.code == 1) // if there's no error
+  {
+    Serial.print("Successfully sent state: ");
+    Serial.println(data);
+  }
+  else
+  {
+    Serial.print("Failed to send state!");
+    Serial.println(rs.getResponseDescription());
+  }
+}
+
+// receives button states from other LoRas
+void checkIncomingLoraData()
+{
+  int receivedState = 0;
+  if (lora.available() > 1)
+  {
+    ResponseContainer rc = lora.receiveMessage();
+    if (rc.status.code == 1) // if there's no error
+    {
+      receivedState = rc.data.toInt();
+      if (receivedState == 1 || receivedState == 2 || receivedState == 3)
+      {
+        Serial.print("Received state: ");
+        Serial.println(receivedState);
+        state = (state == receivedState) ? 0 : receivedState;
+      }
+    }
+    else
+    {
+      Serial.println(rc.status.getResponseDescription());
+    }
+  }
 }

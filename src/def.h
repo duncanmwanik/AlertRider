@@ -58,19 +58,17 @@ void initializePins();
 extern int state;
 extern int selectedChannel;
 extern int channels[];
-extern long lastExecutionMillis;
+extern int lastExecutionMillis;
 
 // ---------- button functions
 void checkForButtonPress();
 
 // ---------- leds variables/functions
-extern Adafruit_NeoPixel strip(LEDCOUNT, LEDPIN, NEO_RGB + NEO_KHZ800);
 void setupNeopixels();
 void flashNeopixel(int pixel, int r, int g, int b);
 void flashStateLED();
 
 // ---------- lora variables/functions
-extern LoRa_E32 lora(&Serial1, lora_AUX, lora_M0, lora_M1);
 void setupLora();
 void changeLoraChannel();
 void sendLoraData(int state);
