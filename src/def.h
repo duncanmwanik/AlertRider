@@ -41,6 +41,9 @@
 #define pinF PB14
 #define pinG PB15
 
+// Lora frequency
+#define FREQUENCY_915
+
 // Lora pins
 #define lora_TX PA9  // ADD INTERNAL PULLUP
 #define lora_RX PA10 // ADD INTERNAL PULLUP
